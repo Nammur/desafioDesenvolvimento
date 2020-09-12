@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Gerenciamento de Pessoas</title>
+    </h:head>
+    <h:body>
+    <h:form>
+           <p:messages autoUpdate="true" showDetail="false"></p:messages>
+            <p:fieldset legend="Cartas">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton value="Salvar" action="#{pessoaBean.salvar()}" update="@form"></p:commandButton>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <p:button value="Quantidade de Funcionarios: #{pessoaBean.getFuncionarios()}"></p:button>
+                    <p:button value="Quantidade de Visitantes: #{pessoaBean.getVisitantes()}"></p:button>
+                </p:toolbarGroup>
+            </p:toolbar>
+                <p:panelGrid columns="2" rendered="#{pessoaBean.isEdita() == true}">
+                    <h:outputLabel value="Nome"></h:outputLabel>
+                    <p:inputText value="#{pessoaBean.pessoa.nome}"></p:inputText>
+
+                    <h:outputLabel value="Hora Entrada"></h:outputLabel>
+                    <p:calendar value="#{pessoaBean.pessoa.entrada}" pattern="dd/MM/yyyy HH:mm"></p:calendar>
+                    
+                    <h:outputLabel value="Funcao"></h:outputLabel>
+                    <p:selectOneListbox value="#{pessoaBean.pessoa.funcao}">
+                        <f:selectItem itemLabel="Funcionario" itemValue="Funcionario" />
+                        <f:selectItem itemLabel="Visitante" itemValue="Visitante" />
+                    </p:selectOneListbox> 
+                    
+                </p:panelGrid>
+                <p:panelGrid columns="2" rendered="#{pessoaBean.isSaida() == true}">
+                    <h:outputLabel value="Hora Saída"></h:outputLabel>
+                    <p:calendar value="#{pessoaBean.pessoa.saida}" pattern="dd/MM/yyyy HH:mm"></p:calendar>
+
+                </p:panelGrid>
+                <p:dataTable value="#{pessoaBean.pessoas}" var="pessoa">
+                    <p:column>
+                        <p:commandButton value="Adicionar Hora de Saida" action="#{pessoaBean.adicionarSaida(pessoa)}" update="@form"></p:commandButton>
+                    </p:column>
+                    <p:column headerText="Nome" sortBy="#{pessoa.nome}">
+                        <h:outputText value="#{pessoa.nome}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Hora de Entrada" sortBy="#{pessoa.entrada}">
+                        <h:outputText value="#{pessoa.entrada}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Hora de Saída" sortBy="#{pessoa.saida}">
+                        <h:outputText value="#{pessoa.saida}"></h:outputText>
+                    </p:column>
+                    <p:column headerText="Visita/Funcionario" sortBy="#{pessoa.funcao}">
+                        <h:outputText value="#{pessoa.funcao}"></h:outputText>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="Editar" action="#{pessoaBean.editar(pessoa)}" rendered="#{pessoaBean.isEdita() == true}" update="@form"></p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+    </h:body>
+</html>
+
